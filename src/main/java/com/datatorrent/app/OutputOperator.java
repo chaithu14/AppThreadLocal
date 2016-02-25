@@ -1,16 +1,17 @@
 package com.datatorrent.app;
 
-import com.datatorrent.api.DefaultInputPort;
-import com.datatorrent.common.util.BaseOperator;
+import com.datatorrent.lib.io.fs.AbstractReconciler;
 
-public class OutputOperator extends BaseOperator
+public class OutputOperator extends AbstractReconciler<String, String>
 {
-    public final transient DefaultInputPort<Object> input = new DefaultInputPort<Object>()
-    {
-        @Override
-        public void process(Object t)
-        {
-            throw new RuntimeException("Error during process");
-        }
-    };
+
+    @Override
+    protected void processTuple(String s) {
+        enqueueForProcessing(s);
+    }
+
+    @Override
+    protected void processCommittedData(String s) {
+        throw new RuntimeException("Error: Unable to ProcessCommittedData");
+    }
 }
