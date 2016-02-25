@@ -1,0 +1,10 @@
+<configuration>
+  <property>
+    <name>dt.application.Demo.operator.*.attr.MEMORY_MB</name>
+    <value>1024</value>
+  </property>
+  <property>
+    <name>dt.application.Demo.attr.MASTER_MEMORY_MB</name>
+    <value>1024</value>
+  </property>
+</configuration>
