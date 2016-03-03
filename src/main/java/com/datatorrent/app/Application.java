@@ -18,6 +18,8 @@
  */
 package com.datatorrent.app;
 
+import com.datatorrent.api.Operator;
+import com.datatorrent.lib.algo.UniqueCounter;
 import org.apache.hadoop.conf.Configuration;
 import com.datatorrent.lib.testbench.RandomEventGenerator;
 import com.datatorrent.api.DAG;
@@ -32,8 +34,10 @@ public class Application implements StreamingApplication
     public void populateDAG(DAG dag, Configuration conf)
     {
         RandomEventGenerator rand = dag.addOperator("rand", new RandomEventGenerator());
+        UniqueCounter count = dag.addOperator("count", new UniqueCounter());
         OutputOperator output = dag.addOperator("output", new OutputOperator());
-        dag.addStream("Process", rand.string_data,output.input).setLocality(DAG.Locality.THREAD_LOCAL);
-    }
 
+        dag.addStream("Process", rand.integer_data, count.data);
+        dag.addStream("Write", count.count, output.input).setLocality(DAG.Locality.THREAD_LOCAL);
+    }
 }
